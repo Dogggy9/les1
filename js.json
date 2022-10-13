@@ -1,0 +1,35 @@
+{
+  "ok": true,
+  "result": [
+    {
+      "update_id": 338032791,
+      "message": {
+        "message_id": 149,
+        "from": {
+          "id": 656319957,
+          "is_bot": false,
+          "first_name": "Леонид",
+          "last_name": "Грабовский",
+          "username": "leonidgrabovskij941",
+          "language_code": "ru"
+        },
+        "chat": {
+          "id": 656319957,
+          "first_name": "Леонид",
+          "last_name": "Грабовский",
+          "username": "leonidgrabovskij941",
+          "type": "private"
+        },
+        "date": 1665591512,
+        "text": "/start",
+        "entities": [
+          {
+            "offset": 0,
+            "length": 6,
+            "type": "bot_command"
+          }
+        ]
+      }
+    }
+  ]
+}
