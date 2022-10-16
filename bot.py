@@ -1,42 +1,40 @@
 import telebot
 
-bot = telebot.TeleBot('5721389141:AAE3hEZfKPk5NsfbG-oDnIQF4XDYLH41IM8')
+TOKEN = '5721389141:AAE3hEZfKPk5NsfbG-oDnIQF4XDYLH41IM8'
+tb = telebot.TeleBot(TOKEN)	 # Создаем новый объект 'телеграмбот'
+
+# Называя эту функцию, Telebot начинает опросить серверы Telegram для новых сообщений.
+# - interval: int (default 0) - интервал между запросами на опрос
+# - timeout: integer (default 20) - Тайм -аут за считанные секунды для длительного опроса.
+# - allowed_updates: List of Strings (default None) - Список типов обновлений для запроса
+tb.infinity_polling(interval=0, timeout=20)
+
+# getMe
+user = tb.get_me()
+
+# setWebhook
+tb.set_webhook(url="http://example.com", certificate=open('mycert.pem'))
+# unset webhook
+tb.remove_webhook()
+
+# # getUpdates
+# updates = tb.get_updates()
+# # or
+# updates = tb.get_updates(1234, 100, 20)  # get_Updates(offset, limit, timeout):
+
+# sendMessage
+tb.send_message(chat_id, text)
+
+# editMessageText
+tb.edit_message_text(new_text, chat_id, message_id)
+
+# forwardMessage
+tb.forward_message(to_chat_id, from_chat_id, message_id)
+
+# Все функции send_xyz, которые могут взять файл в качестве аргумента, также могут взять файл_ид вместо файла.
+# sendPhoto
+photo = open('/tmp/photo.png', 'rb')
+tb.send_photo(chat_id, photo)
+tb.send_photo(chat_id, "FILEID")
 
 
-# AdvancedCustomFilter is for list, string filter values
-class MainFilter(telebot.custom_filters.AdvancedCustomFilter):
-    key='text'
-    @staticmethod
-    def check(message, text):
-        return message.text in text
-
-# SimpleCustomFilter is for boolean values, such as is_admin=True
-class IsAdmin(telebot.custom_filters.SimpleCustomFilter):
-    key='is_admin'
-    @staticmethod
-    def check(message: telebot.types.Message):
-        return bot.get_chat_member(message.chat.id,message.from_user.id).status in ['administrator','creator']
-
-
-@bot.message_handler(is_admin=True, commands=['admin']) # Check if user is admin
-def admin_rep(message):
-    bot.send_message(message.chat.id, "Hi admin")
-
-@bot.message_handler(is_admin=False, commands=['admin']) # If user is not admin
-def not_admin(message):
-    bot.send_message(message.chat.id, "You are not admin")
-
-@bot.message_handler(text=['hi']) # Response to hi message
-def welcome_hi(message):
-    bot.send_message(message.chat.id, 'You said hi')
-
-@bot.message_handler(text=['bye']) # Response to bye message
-def bye_user(message):
-    bot.send_message(message.chat.id, 'You said bye')
-
-
-# Do not forget to register filters
-bot.add_custom_filter(MainFilter())
-bot.add_custom_filter(IsAdmin())
-
-bot.infinity_polling(skip_pending=True) # Skip old updates
