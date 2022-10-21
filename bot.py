@@ -1,7 +1,7 @@
 import telebot
+from moduls.seting import TOKEN
 
-TOKEN = '5721389141:AAE3hEZfKPk5NsfbG-oDnIQF4XDYLH41IM8'
-tb = telebot.TeleBot(TOKEN)	 # Создаем новый объект 'телеграмбот'
+tb = telebot.TeleBot(TOKEN)  # Создаем новый объект 'телеграмбот'
 
 # Называя эту функцию, Telebot начинает опросить серверы Telegram для новых сообщений.
 # - interval: int (default 0) - интервал между запросами на опрос
@@ -36,5 +36,3 @@ tb.forward_message(to_chat_id, from_chat_id, message_id)
 photo = open('/tmp/photo.png', 'rb')
 tb.send_photo(chat_id, photo)
 tb.send_photo(chat_id, "FILEID")
-
-

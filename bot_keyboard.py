@@ -1,7 +1,9 @@
 import telebot
 from telebot import types
+from moduls.seting import TOKEN
 
-bot = telebot.TeleBot('5721389141:AAE3hEZfKPk5NsfbG-oDnIQF4XDYLH41IM8')
+bot = telebot.TeleBot(TOKEN)
+
 
 @bot.message_handler(commands=["start"])
 def startKBoard(message):
@@ -10,6 +12,7 @@ def startKBoard(message):
     Info = types.KeyboardButton(text="Инофрмация")
     startKBoard.add(Catalog, Info)
     bot.send_message(message.chat.id, "Добро пожаловать в магазин цифровых товаров", reply_markup=startKBoard)
+
 
 @bot.message_handler(content_types=['text'])
 def catalogchk(message):
@@ -22,6 +25,7 @@ def catalogchk(message):
         VPN = types.KeyboardButton(text="VPN")
         catalogKBoard.add(Steam, Origin, UPlay, EpicGames, VPN)
         bot.send_message(message.chat.id, "Выберите Раздел", reply_markup=catalogKBoard)
+
 
 if __name__ == '__main__':
     bot.infinity_polling()

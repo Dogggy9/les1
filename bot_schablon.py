@@ -1,37 +1,71 @@
 import telebot
-bot = telebot.TeleBot("TOKEN")
+from telebot import types
+from moduls.seting import TOKEN
 
-# Обрабатывает все текстовые сообщения, которые содержат команды '/start' or '/help'.
-@bot.message_handler(commands=['start', 'help'])
-def handle_start_help(message):
-	pass
+bot = telebot.TeleBot(TOKEN)
+name = ''
+surname = ''
+age = 0
 
-# Обрабатывает все отправленные документы и аудиофайлы
-@bot.message_handler(content_types=['document', 'audio'])
-def handle_docs_audio(message):
-	pass
 
-# Обрабатывает все текстовые сообщения, которые соответствуют регулярному выражению
-@bot.message_handler(regexp="SOME_REGEXP")
-def handle_message(message):
-	pass
+# @bot.message_handler(content_types=['text'])
+# def get_text_messages(message):
+# 	if message.text == "Привет":
+# 		bot.send_message(message.from_user.id, "Привет, чем я могу тебе помочь?")
+# 	elif message.text == "/help":
+# 		bot.send_message(message.from_user.id, "Напиши привет")
+# 	else:
+# 		bot.send_message(message.from_user.id, "Я тебя не понимаю. Напиши /help.")
 
-# Обрабатывает все сообщения, для которых Lambda возвращает True
-@bot.message_handler(func=lambda message: message.document.mime_type == 'text/plain', content_types=['document'])
-def handle_text_doc(message):
-	pass
+@bot.message_handler(content_types=['text'])
+def start(message):
+    if message.text == '/reg':
+        bot.send_message(message.from_user.id, "Как тебя зовут?")
+        bot.register_next_step_handler(message, get_name)  # следующий шаг – функция get_name
+    else:
+        bot.send_message(message.from_user.id, 'Напиши /reg')
 
-# Который также может быть определен как:
-def test_message(message):
-	return message.document.mime_type == 'text/plain'
 
-@bot.message_handler(func=test_message, content_types=['document'])
-def handle_text_doc(message):
-	pass
+def get_name(message):  # получаем фамилию
+    global name
+    name = message.text
+    bot.send_message(message.from_user.id, 'Какая у тебя фамилия?')
+    bot.register_next_step_handler(message, get_surname)
 
-# Handlers can be stacked to create a function which will be called if either message_handler is eligible
-# Этот обработчик будет вызван, если сообщение начнется с '/hello' или есть смайлики
-@bot.message_handler(commands=['hello'])
-@bot.message_handler(func=lambda msg: msg.text.encode("utf-8") == SOME_FANCY_EMOJI)
-def send_something(message):
-	pass
+
+def get_surname(message):
+    global surname
+    surname = message.text
+    bot.send_message(message.from_user.id, 'Сколько тебе лет?')
+    bot.register_next_step_handler(message, get_age)
+
+
+def get_age(message):
+    global age
+    while age == 0:  # проверяем что возраст изменился
+        try:
+            age = int(message.text)  # проверяем, что возраст введен корректно
+        except Exception:
+            bot.send_message(message.from_user.id, 'Цифрами, пожалуйста')
+            bot.send_message(message.from_user.id, 'Сколько тебе лет?')
+
+    keyboard = types.InlineKeyboardMarkup()  # наша клавиатура
+    key_yes = types.InlineKeyboardButton(text='Да', callback_data='yes')  # кнопка «Да»
+    keyboard.add(key_yes)  # добавляем кнопку в клавиатуру
+    key_no = types.InlineKeyboardButton(text='Нет', callback_data='no')
+    keyboard.add(key_no)
+    question = 'Тебе ' + str(age) + ' лет, тебя зовут ' + name + ' ' + surname + '?'
+    bot.send_message(message.from_user.id, text=question, reply_markup=keyboard)
+
+
+@bot.callback_query_handler(func=lambda call: True)
+def callback_worker(call):
+    if call.data == "yes":  # call.data это callback_data, которую мы указали при объявлении кнопки
+        bot.send_message(call.message.chat.id, 'Запомню : )')
+    # .... #код сохранения данных, или их обработки
+    elif call.data == "no":
+        bot.send_chat_action(call.chat.id, '/reg')
+    # ... #переспрашиваем
+
+
+bot.polling(none_stop=True, interval=0)
