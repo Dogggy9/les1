@@ -1,4 +1,6 @@
-import telebot, wikipedia, re
+import telebot
+import wikipedia
+import re
 from moduls.seting import TOKEN
 
 bot = telebot.TeleBot(TOKEN)

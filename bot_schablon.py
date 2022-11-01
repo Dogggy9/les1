@@ -9,13 +9,13 @@ age = 0
 
 
 # @bot.message_handler(content_types=['text'])
-# def get_text_messages(message):
-# 	if message.text == "Привет":
-# 		bot.send_message(message.from_user.id, "Привет, чем я могу тебе помочь?")
-# 	elif message.text == "/help":
-# 		bot.send_message(message.from_user.id, "Напиши привет")
+# def get_text_messages(call):
+# 	if call.text == "Привет":
+# 		bot.send_message(call.from_user.id, "Привет, чем я могу тебе помочь?")
+# 	elif call.text == "/help":
+# 		bot.send_message(call.from_user.id, "Напиши привет")
 # 	else:
-# 		bot.send_message(message.from_user.id, "Я тебя не понимаю. Напиши /help.")
+# 		bot.send_message(call.from_user.id, "Я тебя не понимаю. Напиши /help.")
 
 @bot.message_handler(content_types=['text'])
 def start(message):

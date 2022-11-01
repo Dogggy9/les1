@@ -35,7 +35,7 @@ def send_welcome(message):
 
 @bot.callback_query_handler(func=lambda call: True)
 def handle(call):
-    # bot.send_message(call.message.chat.id, 'Data: {}'.format(str(call.data)))
+    # bot.send_message(call.call.chat.id, 'Data: {}'.format(str(call.data)))
     if call.data == '/about_author':
         bot.send_message(call.message.chat.id, 'Hi! My name is Leonid. I\'m author this channel.')
     if call.data == '/help':
