@@ -12,21 +12,21 @@ def open_website(message):
 	markup.add(types.InlineKeyboardButton("Перейти на сайт", url="https://itproger.com"))
 	bot.send_message(message.chat.id,
 			"Отличный выбор, нажмите на кнопку ниже и начинайте изучения курсов прямо сейчас",
-			parse_mode='html', reply_markup=markup)
+			parse_mode='soup', reply_markup=markup)
 
 
 @bot.message_handler(commands=['insta'])
 def instagram(message):
 	markup = types.InlineKeyboardMarkup()
 	markup.add(types.InlineKeyboardButton("Перейти в Инстаграм", url="https://www.instagram.com/itproger_official/"))
-	bot.send_message(message.chat.id, "Нажмите на кнопку ниже и погрузитесь в мир IT прямо сейчас", parse_mode='html', reply_markup=markup)
+	bot.send_message(message.chat.id, "Нажмите на кнопку ниже и погрузитесь в мир IT прямо сейчас", parse_mode='soup', reply_markup=markup)
 
 
 @bot.message_handler(commands=['vk'])
 def vk(message):
 	markup = types.InlineKeyboardMarkup()
 	markup.add(types.InlineKeyboardButton("Посетить группу Вк", url="https://vk.com/prog_life"))
-	bot.send_message(message.chat.id, "Нажмите на кнопку ниже и погрузитесь в мир IT прямо сейчас", parse_mode='html', reply_markup=markup)
+	bot.send_message(message.chat.id, "Нажмите на кнопку ниже и погрузитесь в мир IT прямо сейчас", parse_mode='soup', reply_markup=markup)
 
 
 @bot.message_handler(commands=['start'])
@@ -40,7 +40,7 @@ def start(message):
 	btn6 = types.KeyboardButton('Создание ИИ')
 	markup.add(btn1, btn2, btn3, btn4, btn5, btn6)
 	send_mess = f"<b>Привет {message.from_user.first_name} {message.from_user.last_name}</b>!\nКакое направление тебя интересует?"
-	bot.send_message(message.chat.id, send_mess, parse_mode='html', reply_markup=markup)
+	bot.send_message(message.chat.id, send_mess, parse_mode='soup', reply_markup=markup)
 
 
 @bot.message_handler(content_types=['text'])
@@ -82,7 +82,7 @@ def mess(message):
 		btn6 = types.KeyboardButton('Создание ИИ')
 		markup.add(btn1, btn2, btn3, btn4, btn5, btn6)
 		final_message = "Так, так, так\nПостой, лучше нажми на одну из интерактивных кнопок ниже"
-	bot.send_message(message.chat.id, final_message, parse_mode='html', reply_markup=markup)
+	bot.send_message(message.chat.id, final_message, parse_mode='soup', reply_markup=markup)
 
 bot.remove_webhook()
 bot.polling(none_stop=True)
